@@ -35,8 +35,8 @@
     function initCreatures() {
         var boundaries = {boundaryX: canvasSize.width, boundaryY: canvasSize.height};
         creatures = []   
-                .concat(new Player(_.extend({}, CONF.player, boundaries)))
-                .concat(new Creature(_.extend({}, CONF.alien, boundaries)));
+                .concat(new Player(_.extend({}, CONF.actors.rincewind, boundaries)))
+                .concat(new Creature(_.extend({}, CONF.actors.luggage, boundaries)));
     }
 
     function bindEvents() {

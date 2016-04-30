@@ -6,7 +6,7 @@
         x: 0,
         y: 0
     };
-        
+
     CONF.keys = {
         37: {// Left
             offset: _.extend({}, noMovement, {x: -1}),
@@ -26,26 +26,39 @@
         }
     };
 
-    CONF.player = {
-        x: 125,
-        y: 125,
-        numberOfFrames: 4,
-        ticksPerFrame: 6,
-        playerSpeed: 4,
-        imageUrl: 'img/rincewind.png'
+
+    CONF.directions = {
+        DOWN: 0,
+        LEFT: 1,
+        RIGHT: 2,
+        UP: 3
     };
 
-    CONF.alien = {
-        x: 50,
-        y: 50,
-        numberOfFrames: 4,
-        ticksPerFrame: 6,
-        playerSpeed: 4,
-        imageUrl: 'img/luggage.png'
+    CONF.howManyDirections = function () {
+        return _.size(_.keys(CONF.directions));
+    };
+
+    CONF.actors = {
+        rincewind: {
+            x: 125,
+            y: 125,
+            numberOfFrames: 4,
+            ticksPerFrame: 6,
+            playerSpeed: 4,
+            imageUrl: 'img/rincewind.png'
+        },
+        luggage: {
+            x: 50,
+            y: 50,
+            numberOfFrames: 4,
+            ticksPerFrame: 6,
+            playerSpeed: 4,
+            imageUrl: 'img/luggage.png'
+        }
     };
 
     CONF.loadSprites = function () {
-        return $.when.apply($, _.reduce([CONF.player, CONF.alien], function (memo, creature) {
+        return $.when.apply($, _.reduce(CONF.actors, function (memo, creature) {
             var dfd = $.Deferred(),
                 image = new Image;
             image.src = creature.imageUrl;
@@ -55,17 +68,6 @@
             };
             return memo.concat(dfd.promise());
         }, []));
-    };
-
-    CONF.directions = {
-        DOWN: 0,
-        LEFT: 1,
-        RIGHT: 2,
-        UP: 3
-    };
-    
-    CONF.howManyDirections = function () {
-        return _.size(_.keys(CONF.directions));
     };
 })(window.CONF = window.CONF || {}, jQuery, _);
 
