@@ -4,18 +4,21 @@
 function Creature(cfg) {
     this.x = cfg.x;
     this.y = cfg.y;
-    this.height = cfg.height;
-    this.width = cfg.width;
-    this.boundaryX = cfg.boundaryX - this.width;
-    this.boundaryY = cfg.boundaryY - this.height;
+    this.playerSpeed = cfg.playerSpeed;
+    this.spriteManager = new SpriteManager(_.pick(cfg, 'image', 'numberOfFrames', 'ticksPerFrame', 'frameWidth', 'frameHeight'));
+    this.boundaryX = cfg.boundaryX - this.spriteManager.getFrameWidth();
+    this.boundaryY = cfg.boundaryY - this.spriteManager.getFrameHeight();
 }
 
-Creature.prototype.getValidOffsetX = function (offset) {
-    return UTILS.getValidOffset(this.boundaryX, this.x, offset);
+Creature.prototype.applyMovement = function (movement) {
+    this.x += UTILS.getValidOffset(this.boundaryX, this.x, this.playerSpeed * movement.x);
+    this.y += UTILS.getValidOffset(this.boundaryY, this.y, this.playerSpeed * movement.y);
+    return this;
 };
 
-Creature.prototype.getValidOffsetY = function (offset) {
-    return UTILS.getValidOffset(this.boundaryY, this.y, offset);
+Creature.prototype.adjustSprite = function (movement) {
+    this.spriteManager.adjustSprite(movement);
+    return this;
 };
 
 Creature.prototype.updatePosition = function () {
@@ -23,11 +26,6 @@ Creature.prototype.updatePosition = function () {
 };
 
 Creature.prototype.draw = function (ctx) {
-    ctx.beginPath();
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = "#FF0000";
-    ctx.fill();
-    ctx.closePath();
-
+    ctx.drawImage.apply(ctx, this.spriteManager.getDrawImageArgs({x: this.x, y: this.y}));
     return this;
 };

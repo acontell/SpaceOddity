@@ -46,10 +46,13 @@
 
     /* Public interface */
     GAME.launch = function ($canvas) {
-        initCtx($canvas);
-        initCreatures();
-        bindEvents();
-        mainLoop();
+        CONF.loadSprites()
+            .done(function() {
+                initCtx($canvas);
+                initCreatures();
+                bindEvents();
+                mainLoop();
+            });
     };
 
 })(window.GAME = window.GAME || {}, jQuery, _);
