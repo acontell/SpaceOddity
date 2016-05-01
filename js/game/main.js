@@ -33,10 +33,9 @@
     }
 
     function initCreatures() {
-        var boundaries = {boundaryX: canvasSize.width, boundaryY: canvasSize.height};
         creatures = []   
-                .concat(new Player(_.extend({}, CONF.actors.rincewind, boundaries)))
-                .concat(new Creature(_.extend({}, CONF.actors.luggage, boundaries)));
+                .concat(new Player(CONF.actors.rincewind))
+                .concat(new Creature(CONF.actors.luggage));
     }
 
     function bindEvents() {
@@ -45,8 +44,18 @@
     }
 
     /* Public interface */
+    GAME.getAllCreaturesButMe = function (creature) {
+        return _.filter(creatures, function(obj) {
+            return creature !== obj;
+        });
+    };
+    
+    GAME.getCanvasSize = function() {
+        return canvasSize;
+    };
+    
     GAME.launch = function ($canvas) {
-        CONF.loadSprites()
+        UTILS.loadSprites(CONF.actors)
             .done(function() {
                 initCtx($canvas);
                 initCreatures();

@@ -5,14 +5,14 @@ function Creature(cfg) {
     this.x = cfg.x;
     this.y = cfg.y;
     this.playerSpeed = cfg.playerSpeed;
-    this.spriteManager = new SpriteManager(_.pick(cfg, 'image', 'numberOfFrames', 'ticksPerFrame', 'frameWidth', 'frameHeight'));
-    this.boundaryX = cfg.boundaryX - this.spriteManager.getFrameWidth();
-    this.boundaryY = cfg.boundaryY - this.spriteManager.getFrameHeight();
+    this.spriteManager = new SpriteManager(_.pick(cfg, 'image', 'numberOfFrames', 'ticksPerFrame'));
+    this.width = this.spriteManager.getFrameWidth();
+    this.height = this.spriteManager.getFrameHeight();
 }
 
 Creature.prototype.applyMovement = function (movement) {
-    this.x += UTILS.getValidOffset(this.boundaryX, this.x, this.playerSpeed * movement.x);
-    this.y += UTILS.getValidOffset(this.boundaryY, this.y, this.playerSpeed * movement.y);
+    this.x += UTILS.getValidOffsetX(this, this.playerSpeed * movement.x);
+    this.y += UTILS.getValidOffsetY(this, this.playerSpeed * movement.y);
     return this;
 };
 

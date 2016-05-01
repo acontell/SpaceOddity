@@ -5,7 +5,7 @@ function SpriteManager(cfg) {
     var image = cfg.image,
         numberOfFrames = cfg.numberOfFrames,
         frameWidth = image.width / numberOfFrames,
-        frameHeight = image.height / CONF.howManyDirections(),
+        frameHeight = image.height / CONSTANTS.numberOfDirections,
         ticksPerFrame = cfg.ticksPerFrame || 0,
         tickCount = 0,
         currentFrame = 0,
@@ -32,7 +32,7 @@ function SpriteManager(cfg) {
     };
 
     this.adjustSprite = function (movement) {
-        if (UTILS.noMovement(movement)) {
+        if (UTILS.hasNoMovement(movement)) {
             currentFrame = currentDirection = 0;
         } else {
             updateFrameNumber();
@@ -50,10 +50,10 @@ function SpriteManager(cfg) {
     }
 
     function updateDirectionBasedOnMovement(movement) {
-        if (UTILS.movesHorizontally(movement)) {
-            currentDirection = movement.x > 0 ? CONF.directions.RIGHT : CONF.directions.LEFT;
+        if (UTILS.isMovingHorizontally(movement)) {
+            currentDirection = movement.x > 0 ? CONSTANTS.directions.RIGHT : CONSTANTS.directions.LEFT;
         } else {
-            currentDirection = movement.y > 0 ? CONF.directions.DOWN : CONF.directions.UP;
+            currentDirection = movement.y > 0 ? CONSTANTS.directions.DOWN : CONSTANTS.directions.UP;
         }
     }
 }
