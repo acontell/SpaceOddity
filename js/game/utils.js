@@ -3,24 +3,21 @@
  */
 (function (UTILS, _, undefined) {
     /* private */
-    function getCreaturePositionAfterMovement(creature, movement) {
-        var x = creature.x + (creature.creatureSpeed * movement.x),
-            y = creature.y + (creature.creatureSpeed * movement.y);
-
+    function getRectAfterMovement(creature, movement) {
         return {
-            x: x,
-            y: y,
-            farthestX: x + (movement.x > 0 ? creature.width : 0),
-            farthestY: y + (movement.y > 0 ? creature.height : 0)
+            x: creature.x + (creature.creatureSpeed * movement.x),
+            y: creature.y + (creature.creatureSpeed * movement.y),
+            width: creature.width,
+            height: creature.height
         };
     }
 
     /* public interface */
     UTILS.getValidMovement = function (creature, movement) {
-        var newPosition = getCreaturePositionAfterMovement(creature, movement);
+        var newPosition = getRectAfterMovement(creature, movement);
         return {
-            x: WORLD.isValidMovement({x: newPosition.farthestX, y: creature.y}) ? newPosition.x : creature.x,
-            y: WORLD.isValidMovement({x: creature.x, y: newPosition.farthestY}) ? newPosition.y : creature.y
+            x: WORLD.isValidMovement(_.extend({}, newPosition, {y: creature.y})) ? newPosition.x : creature.x,
+            y: WORLD.isValidMovement(_.extend({}, newPosition, {x: creature.x})) ? newPosition.y : creature.y
         };
     };
     
