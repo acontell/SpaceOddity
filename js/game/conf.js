@@ -27,17 +27,49 @@
             y: 125,
             numberOfFrames: 4,
             ticksPerFrame: 6,
-            playerSpeed: 4,
-            imageUrl: 'img/rincewind.png'
+            creatureSpeed: 4,
+            imageUrl: 'img/rincewind.png',
+            image: null
         },
         luggage: {
             x: 50,
             y: 50,
             numberOfFrames: 4,
             ticksPerFrame: 6,
-            playerSpeed: 4,
-            imageUrl: 'img/luggage.png'
+            creatureSpeed: 4,
+            imageUrl: 'img/luggage.png',
+            image: null
         }
     };
+    
+    CONF.world = {
+        worldWidth: 16,
+        worldHeight: 16,
+        noMovementTileNumberLimit: 0,
+        getSize: function () {
+            return {width: this.worldWidth * this.tiles.tileWidth, height: this.worldHeight * this.tiles.tileHeight};
+        },
+        tiles: {
+            tileWidth: 32,
+            tileHeight: 32,
+            imageUrl: 'img/tiles.png',
+            image: null
+        }
+    };
+    
+    CONF.levels = {
+        firstLevel: (function (worldCfg) {
+            return _.reduce(_.range(worldCfg.worldWidth), function (memo, x) {
+                memo.push(_.reduce(_.range(worldCfg.worldHeight), function (memo, y) {
+                    return memo.concat(y === 0 || x === 0 
+                            || x === worldCfg.worldWidth / 2 && y === worldCfg.worldHeight / 2
+                            || x === worldCfg.worldWidth - 1 || y === worldCfg.worldHeight - 1 ? 0 : 1);
+                }, []));
+                return memo;
+            }, []);
+        })(CONF.world)
+    };
+    
+    CONF.elements = _.extend({}, CONF.actors, _.pick(CONF.world, 'tiles'));
 })(window.CONF = window.CONF || {}, jQuery, _);
 

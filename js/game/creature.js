@@ -4,15 +4,14 @@
 function Creature(cfg) {
     this.x = cfg.x;
     this.y = cfg.y;
-    this.playerSpeed = cfg.playerSpeed;
+    this.creatureSpeed = cfg.creatureSpeed;
     this.spriteManager = new SpriteManager(_.pick(cfg, 'image', 'numberOfFrames', 'ticksPerFrame'));
     this.width = this.spriteManager.getFrameWidth();
     this.height = this.spriteManager.getFrameHeight();
 }
 
 Creature.prototype.applyMovement = function (movement) {
-    this.x += UTILS.getValidOffsetX(this, this.playerSpeed * movement.x);
-    this.y += UTILS.getValidOffsetY(this, this.playerSpeed * movement.y);
+    _.extend(this, UTILS.getValidMovement(this, movement));
     return this;
 };
 
@@ -26,6 +25,6 @@ Creature.prototype.updatePosition = function () {
 };
 
 Creature.prototype.draw = function (ctx) {
-    ctx.drawImage.apply(ctx, this.spriteManager.getDrawImageArgs({x: this.x, y: this.y}));
+    ctx.drawImage.apply(ctx, this.spriteManager.getDrawImageArgs(_.pick(this, 'x', 'y')));
     return this;
 };
