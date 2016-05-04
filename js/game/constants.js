@@ -17,14 +17,8 @@
     CONSTANTS.numberOfDirections = _.size(_.keys(CONSTANTS.directions));
     
     CONSTANTS.coordsAlias = {
-        X: {
-            axis: 'x',
-            depth: 'width'
-        },
-        Y: {
-            axis: 'y',
-            depth: 'height'
-        }
+        X: 'x',
+        Y: 'y'
     };
 })(window.CONSTANTS = window.CONSTANTS || {}, _);
 

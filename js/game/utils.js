@@ -3,48 +3,27 @@
  */
 (function (UTILS, _, undefined) {
     /* private */
-    function isThereCollision(rect1, rect2) {
-        return rect1.x < rect2.x + rect2.width &&
-                rect1.x + rect1.width > rect2.x &&
-                rect1.y < rect2.y + rect2.height &&
-                rect1.height + rect1.y > rect2.y;
-    }
+    function getCreaturePositionAfterMovement(creature, movement) {
+        var x = creature.x + (creature.creatureSpeed * movement.x),
+            y = creature.y + (creature.creatureSpeed * movement.y);
 
-    function getValidOffsetBoundary(boundary, position, offset) {
-        var newVal = position + offset,
-            validOffset = newVal < boundary.min ? boundary.min - position : offset;
-
-        return newVal > boundary.max ? boundary.max - position : validOffset;
-    }
-
-    function getCreatureNewRect(creature, coord, offset) {
-        var newRect = _.pick(creature, 'height', 'width', 'x', 'y');
-        newRect[coord.axis] += offset;
-        return newRect;
-    }
-
-    function getValidOffset(coord, creature, offset) {
-        var canvasBoundary = {min: 0, max: GAME.getCanvasSize()[coord.depth] - creature[coord.depth]},
-            validOffsetBoundary = getValidOffsetBoundary(canvasBoundary, creature[coord.axis], offset);
-
-        return _.reduce(GAME.getAllCreaturesButMe(creature), function (memo, creature2) {
-            var boundary;
-            if (isThereCollision(getCreatureNewRect(creature, coord, validOffsetBoundary), creature2)) {
-                boundary = creature[coord.axis] < creature2[coord.axis]
-                        ? _.extend(canvasBoundary, {max: creature2[coord.axis] - creature[coord.depth]})
-                        : _.extend(canvasBoundary, {min: creature2[coord.axis] + creature2[coord.depth]});
-                        
-                memo = getValidOffsetBoundary(boundary, creature[coord.axis], offset);
-            }
-            return memo;
-        }, validOffsetBoundary);
+        return {
+            x: x,
+            y: y,
+            farthestX: x + (movement.x > 0 ? creature.width : 0),
+            farthestY: y + (movement.y > 0 ? creature.height : 0)
+        };
     }
 
     /* public interface */
-    UTILS.getValidOffsetX = _.partial(getValidOffset, CONSTANTS.coordsAlias.X);
-
-    UTILS.getValidOffsetY = _.partial(getValidOffset, CONSTANTS.coordsAlias.Y);
-
+    UTILS.getValidMovement = function (creature, movement) {
+        var newPosition = getCreaturePositionAfterMovement(creature, movement);
+        return {
+            x: WORLD.isValidMovement({x: newPosition.farthestX, y: creature.y}) ? newPosition.x : creature.x,
+            y: WORLD.isValidMovement({x: creature.x, y: newPosition.farthestY}) ? newPosition.y : creature.y
+        };
+    };
+    
     UTILS.getMovementBasedOnKeys = function (keys) {
         return _.reduce(keys, function (memo, val) {
             memo.x += val.movement.x;
@@ -65,13 +44,13 @@
         return movement.x === 0 && movement.y !== 0;
     };
 
-    UTILS.loadSprites = function (actors) {
-        return $.when.apply($, _.reduce(actors, function (memo, creature) {
+    UTILS.loadSprites = function (elements) {
+        return $.when.apply($, _.reduce(elements, function (memo, element) {
             var dfd = $.Deferred(),
                 image = new Image;
-            image.src = creature.imageUrl;
+            image.src = element.imageUrl;
             image.onload = function () {
-                creature.image = image;
+                element.image = image;
                 dfd.resolve();
             };
             return memo.concat(dfd.promise());

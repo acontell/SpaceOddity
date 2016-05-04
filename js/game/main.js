@@ -3,7 +3,6 @@
  */
 (function (GAME, $, _, undefined) {
     var ctx,
-        canvasSize,
         creatures, 
         keys;
 
@@ -18,7 +17,10 @@
 
     function mainLoop() {
         // Clear canvas
-        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        
+        // Draw World
+        WORLD.draw(ctx);
 
         // Draw creatures.
         drawCreatures(ctx);
@@ -28,14 +30,20 @@
     }
 
     function initCtx($canvas) {
-        canvasSize = {width: $canvas.width(), height: $canvas.height()};
         ctx = $canvas[0].getContext('2d');
+        _.extend(ctx.canvas, CONF.world.getSize());
     }
 
     function initCreatures() {
         creatures = []   
                 .concat(new Player(CONF.actors.rincewind))
                 .concat(new Creature(CONF.actors.luggage));
+    }
+    
+    function initWorld() {
+        WORLD
+            .loadCfg(CONF.world)
+            .loadLevel(CONF.levels.firstLevel);
     }
 
     function bindEvents() {
@@ -44,20 +52,11 @@
     }
 
     /* Public interface */
-    GAME.getAllCreaturesButMe = function (creature) {
-        return _.filter(creatures, function(obj) {
-            return creature !== obj;
-        });
-    };
-    
-    GAME.getCanvasSize = function() {
-        return canvasSize;
-    };
-    
     GAME.launch = function ($canvas) {
-        UTILS.loadSprites(CONF.actors)
+        UTILS.loadSprites(CONF.elements)
             .done(function() {
                 initCtx($canvas);
+                initWorld();
                 initCreatures();
                 bindEvents();
                 mainLoop();
