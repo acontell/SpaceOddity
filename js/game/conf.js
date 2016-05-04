@@ -63,6 +63,7 @@
                 memo.push(_.reduce(_.range(worldCfg.worldHeight), function (memo, y) {
                     return memo.concat(y === 0 || x === 0 
                             || x === worldCfg.worldWidth / 2 && y === worldCfg.worldHeight / 2
+                            || x === Math.floor(worldCfg.worldWidth / 2.5) && y === Math.floor(worldCfg.worldHeight / 2.5)
                             || x === worldCfg.worldWidth - 1 || y === worldCfg.worldHeight - 1 ? 0 : 1);
                 }, []));
                 return memo;
