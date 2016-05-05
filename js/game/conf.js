@@ -2,6 +2,11 @@
  * Singleton to store some configuration variables.
  */
 (function (CONF, $, _, undefined) {
+    var tileSize = {
+        tileWidth: 32,
+        tileHeight: 32
+    };
+    
     CONF.keys = {
         37: {// Left
             offset: _.extend({}, CONSTANTS.noMovement, {x: -1}),
@@ -45,17 +50,16 @@
     CONF.world = {
         worldWidth: 16,
         worldHeight: 16,
-        noMovementTileNumberLimit: 0,
         getSize: function () {
             return {width: this.worldWidth * this.tiles.tileWidth, height: this.worldHeight * this.tiles.tileHeight};
         },
-        tiles: {
-            tileWidth: 32,
-            tileHeight: 32,
+        tiles: _.extend({}, tileSize, {
             imageUrl: 'img/tiles.png',
             image: null
-        }
+        })
     };
+    
+    CONF.collision = _.extend({}, tileSize, {noMovementTileNumberLimit: 0});
     
     CONF.levels = {
         firstLevel: (function (worldCfg) {
@@ -71,6 +75,6 @@
         })(CONF.world)
     };
     
-    CONF.elements = _.extend({}, CONF.actors, _.pick(CONF.world, 'tiles'));
+    CONF.elementsWithSprites = _.extend({}, CONF.actors, _.pick(CONF.world, 'tiles'));
 })(window.CONF = window.CONF || {}, jQuery, _);
 

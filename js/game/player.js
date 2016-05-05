@@ -5,11 +5,12 @@ function Player() {
     Creature.apply(this, arguments);
     
     this.updatePosition = function (keys) {
-        var movement = UTILS.getMovementBasedOnKeys(keys);
+        var movement = MOVEMENT.getMovementBasedOnKeys(keys);
         return this
             .applyMovement(movement)
             .adjustSprite(movement);
     };
 }
+
 Player.prototype = Object.create(Creature.prototype);
 Player.prototype.constructor = Player;
