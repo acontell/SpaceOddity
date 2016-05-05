@@ -3,6 +3,7 @@
  */
 (function (GAME, $, _, undefined) {
     var ctx,
+        world,
         creatures, 
         keys;
 
@@ -41,9 +42,13 @@
     }
     
     function initWorld() {
-        WORLD
+        world = WORLD
             .loadCfg(CONF.world)
             .loadLevel(CONF.levels.firstLevel);
+    }
+    
+    function initCollisionManager() {
+        COLLISION.loadCfg(_.extend(CONF.collision, {world: world, creatures: creatures}));
     }
 
     function bindEvents() {
@@ -53,11 +58,12 @@
 
     /* Public interface */
     GAME.launch = function ($canvas) {
-        UTILS.loadSprites(CONF.elements)
+        UTILS.loadSprites(CONF.elementsWithSprites)
             .done(function() {
                 initCtx($canvas);
                 initWorld();
                 initCreatures();
+                initCollisionManager();
                 bindEvents();
                 mainLoop();
             });

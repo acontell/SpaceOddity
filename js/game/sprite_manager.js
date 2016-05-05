@@ -32,7 +32,7 @@ function SpriteManager(cfg) {
     };
 
     this.adjustSprite = function (movement) {
-        if (UTILS.hasNoMovement(movement)) {
+        if (MOVEMENT.hasNoMovement(movement)) {
             currentFrame = currentDirection = 0;
         } else {
             updateFrameNumber();
@@ -50,7 +50,7 @@ function SpriteManager(cfg) {
     }
 
     function updateDirectionBasedOnMovement(movement) {
-        if (UTILS.isMovingHorizontally(movement)) {
+        if (MOVEMENT.isMovingHorizontally(movement)) {
             currentDirection = movement.x > 0 ? CONSTANTS.directions.RIGHT : CONSTANTS.directions.LEFT;
         } else {
             currentDirection = movement.y > 0 ? CONSTANTS.directions.DOWN : CONSTANTS.directions.UP;
