@@ -5,10 +5,12 @@
     /* private functions */
     
     /* public interface */
-    MOVEMENT.getValidMovement = function (creature, newPosition) {
+    MOVEMENT.getValidMovement = function (creature, movement) {
+        var currentCoords = creature.getCoords(),
+            newPosition = creature.getRectAfterMovement(creature.applySpeedToMovement(movement));
         return {
-            x: COLLISION.isValidMovement(_.extend({}, newPosition, {y: creature.y})) ? newPosition.x : creature.x,
-            y: COLLISION.isValidMovement(_.extend({}, newPosition, {x: creature.x})) ? newPosition.y : creature.y
+            x: COLLISION.isValidMovement(_.extend({}, newPosition, {y: currentCoords.y}), creature) ? newPosition.x : currentCoords.x,
+            y: COLLISION.isValidMovement(_.extend({}, newPosition, {x: currentCoords.x}), creature) ? newPosition.y : currentCoords.y
         };
     };
     

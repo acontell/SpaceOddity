@@ -17,7 +17,7 @@ Creature.prototype.applySpeedToMovement = function (movement) {
 };
 
 Creature.prototype.applyMovement = function (movement) {
-    _.extend(this, MOVEMENT.getValidMovement(this.getCoords(), this.getRectAfterMovement(this.applySpeedToMovement(movement))));
+    _.extend(this, MOVEMENT.getValidMovement(this, movement));
     return this;
 };
 
