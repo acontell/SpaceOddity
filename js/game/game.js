@@ -48,11 +48,13 @@
     }
     
     function initCollisionManager() {
-        COLLISION.loadCfg(_.extend(CONF.collision, {world: world, creatures: creatures}));
+        COLLISION.loadCfg(CONF.collision);
     }
     
     function initHeuristics() {
-        HEURISTICS.astar.init(world);
+        _.each(HEURISTICS, function (heuristic) {
+            heuristic.init(world);
+        });
     }
 
     function bindEvents() {
@@ -61,6 +63,12 @@
     }
 
     /* Public interface */
+    GAME.getAllCreaturesButMe = function(creature) {
+        return _.filter(creatures, function (creature1) {
+            return creature !== creature1;
+        });
+    };
+    
     GAME.launch = function ($canvas) {
         UTILS.loadSprites(CONF.elementsWithSprites)
             .done(function() {
