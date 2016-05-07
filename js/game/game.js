@@ -50,6 +50,10 @@
     function initCollisionManager() {
         COLLISION.loadCfg(_.extend(CONF.collision, {world: world, creatures: creatures}));
     }
+    
+    function initHeuristics() {
+        HEURISTICS.astar.init(world);
+    }
 
     function bindEvents() {
         keys = _.clone(CONF.keys);
@@ -64,6 +68,7 @@
                 initWorld();
                 initCreatures();
                 initCollisionManager();
+                initHeuristics();
                 bindEvents();
                 mainLoop();
             });
