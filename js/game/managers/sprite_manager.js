@@ -36,6 +36,8 @@ function SpriteManager(cfg) {
         if (MOVEMENT.hasMovement(movement)) {
             updateDirectionBasedOnMovement(movement);
             updateFrameNumber();
+        } else {
+            currentFrame = 0;
         }
         return this;
     };
@@ -43,8 +45,8 @@ function SpriteManager(cfg) {
     function updateFrameNumber() {
         if (tickCount > ticksPerFrame) {
             tickCount = 0;
-            currentFrame = currentFrame >= numberOfFrames - 1 ? 0 : currentFrame + 1;
-            currentFrame = previousDirection === currentDirection ? currentFrame : 0;
+            currentFrame = currentFrame >= numberOfFrames - 1 || previousDirection !== currentDirection
+                    ? 0 : currentFrame + 1;
         }
         tickCount += 1;
     }

@@ -32,4 +32,6 @@
     COLLISION.loadCfg = function (elements) {
         noMovementTileNumberLimit = elements.noMovementTileNumberLimit;
     };
+    
+    COLLISION.isThereCollision = isThereCollision;
 })(window.COLLISION = window.COLLISION || {}, jQuery, _);

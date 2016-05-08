@@ -23,4 +23,11 @@
             return el === arr2[index];
         }) : false;
     };
+    
+    UTILS.getPointTranslation = function(point, traslation) {
+        return {
+            x: point.x + traslation.x,
+            y: point.y + traslation.y
+        };
+    };
 })(window.UTILS = window.UTILS || {}, _);

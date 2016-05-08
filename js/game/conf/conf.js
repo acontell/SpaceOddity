@@ -37,6 +37,7 @@
             numberOfFrames: 4,
             ticksPerFrame: 6,
             creatureSpeed: 0.5,
+            perimeterOffset: 5,
             imageUrl: 'img/luggage.png',
             image: null
         }

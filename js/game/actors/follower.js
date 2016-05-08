@@ -4,7 +4,8 @@
 function Follower(cfg) {
     var path = [],
         heuristic = cfg.heuristic,
-        actorToFollow = cfg.actorToFollow;
+        actorToFollow = cfg.actorToFollow,
+        perimeterOffset = cfg.perimeterOffset;
 
     Creature.apply(this, arguments);
     
@@ -12,9 +13,18 @@ function Follower(cfg) {
         return !UTILS.areArrayEqual(pathStart, pathEnd) && !_.size(path);
     }
 
+    function findTheCoordsToGo() {
+        return {
+            x: this.x > actorToFollow.x ?
+                actorToFollow.x + actorToFollow.width + perimeterOffset : actorToFollow.x - perimeterOffset - this.width,
+            y: this.y > actorToFollow.y ?
+                actorToFollow.y + actorToFollow.height + perimeterOffset : actorToFollow.y - perimeterOffset - this.height
+        };
+    }
+
     function findMyWay() {
         var pathStart = _.toArray(WORLD.getTileBasedOnCoords(this.getCoords())),
-            pathEnd = _.toArray(WORLD.getTileBasedOnCoords({x: 421, y: 429}));
+            pathEnd = _.toArray(WORLD.getTileBasedOnCoords(findTheCoordsToGo.apply(this)));
         return hasToBuildPath(pathStart, pathEnd)
                 ? heuristic.getPath(pathStart, pathEnd, MOVEMENT.canWalkHereWrapper(this)) : path;
     }
