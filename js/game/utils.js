@@ -17,8 +17,10 @@
             return memo.concat(dfd.promise());
         }, []));
     };
+    
+    UTILS.areArrayEqual = function (arr1, arr2) {
+        return _.size(arr1) === _.size(arr2) ? _.every(arr1, function (el, index) {
+            return el === arr2[index];
+        }) : false;
+    };
 })(window.UTILS = window.UTILS || {}, _);
-
-
-
-

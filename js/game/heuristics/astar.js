@@ -1,13 +1,13 @@
 (function (HEURISTICS) {
     var world,
-            canWalkHere,
-            abs = Math.abs,
-            max = Math.max,
-            worldWidth,
-            worldHeight,
-            worldSize,
-            distanceFunction = DiagonalDistance,
-            findNeighbours = DiagonalNeighbours;
+        canWalkHere,
+        abs = Math.abs,
+        max = Math.max,
+        worldWidth,
+        worldHeight,
+        worldSize,
+        distanceFunction = DiagonalDistance,
+        findNeighbours = DiagonalNeighbours;
 
     // Initialize object or retrieve previously initialized one.
     HEURISTICS.astar = HEURISTICS.astar || {};
@@ -19,14 +19,14 @@
 
     function Neighbours(x, y) {
         var N = y - 1,
-                S = y + 1,
-                E = x + 1,
-                W = x - 1,
-                myN = N > -1 && canWalkHere(x, N),
-                myS = S < worldHeight && canWalkHere(x, S),
-                myE = E < worldWidth && canWalkHere(E, y),
-                myW = W > -1 && canWalkHere(W, y),
-                result = [];
+            S = y + 1,
+            E = x + 1,
+            W = x - 1,
+            myN = N > -1 && canWalkHere(x, N),
+            myS = S < worldHeight && canWalkHere(x, S),
+            myE = E < worldWidth && canWalkHere(E, y),
+            myW = W > -1 && canWalkHere(W, y),
+            result = [];
         if (myN)
             result.push({x: x, y: N});
         if (myE)
@@ -69,15 +69,15 @@
 
     function calculatePath(pathStart, pathEnd) {
         var mypathStart = Node(null, {x: pathStart[0], y: pathStart[1]}),
-                mypathEnd = Node(null, {x: pathEnd[0], y: pathEnd[1]}),
-                AStar = new Array(worldSize),
-                Open = [mypathStart],
-                Closed = [],
-                result = [],
-                myNeighbours,
-                myNode,
-                myPath,
-                length, max, min, i, j;
+            mypathEnd = Node(null, {x: pathEnd[0], y: pathEnd[1]}),
+            AStar = new Array(worldSize),
+            Open = [mypathStart],
+            Closed = [],
+            result = [],
+            myNeighbours,
+            myNode,
+            myPath,
+            length, max, min, i, j;
 
         while (length = Open.length) {
             max = worldSize;

@@ -36,9 +36,10 @@
     }
 
     function initCreatures() {
+        var player = new Player(CONF.actors.rincewind);
         creatures = []   
-                .concat(new Player(CONF.actors.rincewind))
-                .concat(new Creature(CONF.actors.luggage));
+                .concat(player)
+                .concat(new Follower(_.extend(CONF.actors.luggage, { actorToFollow: player, heuristic: HEURISTICS.astar })));
     }
     
     function initWorld() {
@@ -48,11 +49,13 @@
     }
     
     function initCollisionManager() {
-        COLLISION.loadCfg(_.extend(CONF.collision, {world: world, creatures: creatures}));
+        COLLISION.loadCfg(CONF.collision);
     }
     
     function initHeuristics() {
-        HEURISTICS.astar.init(world);
+        _.each(HEURISTICS, function (heuristic) {
+            heuristic.init(world);
+        });
     }
 
     function bindEvents() {
@@ -61,6 +64,12 @@
     }
 
     /* Public interface */
+    GAME.getAllCreaturesButMe = function(creature) {
+        return _.filter(creatures, function (creature1) {
+            return creature !== creature1;
+        });
+    };
+    
     GAME.launch = function ($canvas) {
         UTILS.loadSprites(CONF.elementsWithSprites)
             .done(function() {
