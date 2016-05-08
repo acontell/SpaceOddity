@@ -27,8 +27,8 @@
         }, {x: 0, y: 0});
     };
 
-    MOVEMENT.hasNoMovement = function (movement) {
-        return movement.x === 0 && movement.y === 0;
+    MOVEMENT.hasMovement = function (movement) {
+        return movement.x !== 0 || movement.y !== 0;
     };
 
     MOVEMENT.isMovingHorizontally = function (movement) {
