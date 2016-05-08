@@ -9,7 +9,8 @@ function SpriteManager(cfg) {
         ticksPerFrame = cfg.ticksPerFrame || 0,
         tickCount = 0,
         currentFrame = 0,
-        currentDirection = 0;
+        currentDirection = CONSTANTS.directions.DOWN,
+        previousDirection = currentDirection;
 
     this.getFrameWidth = function () {
         return frameWidth;
@@ -32,11 +33,9 @@ function SpriteManager(cfg) {
     };
 
     this.adjustSprite = function (movement) {
-        if (MOVEMENT.hasNoMovement(movement)) {
-            currentFrame = currentDirection = 0;
-        } else {
-            updateFrameNumber();
+        if (MOVEMENT.hasMovement(movement)) {
             updateDirectionBasedOnMovement(movement);
+            updateFrameNumber();
         }
         return this;
     };
@@ -45,11 +44,13 @@ function SpriteManager(cfg) {
         if (tickCount > ticksPerFrame) {
             tickCount = 0;
             currentFrame = currentFrame >= numberOfFrames - 1 ? 0 : currentFrame + 1;
+            currentFrame = previousDirection === currentDirection ? currentFrame : 0;
         }
         tickCount += 1;
     }
 
     function updateDirectionBasedOnMovement(movement) {
+        previousDirection = currentDirection;
         if (MOVEMENT.isMovingHorizontally(movement)) {
             currentDirection = movement.x > 0 ? CONSTANTS.directions.RIGHT : CONSTANTS.directions.LEFT;
         } else {
