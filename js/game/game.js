@@ -36,9 +36,10 @@
     }
 
     function initCreatures() {
+        var player = new Player(CONF.actors.rincewind);
         creatures = []   
-                .concat(new Player(CONF.actors.rincewind))
-                .concat(new Creature(CONF.actors.luggage));
+                .concat(player)
+                .concat(new Follower(_.extend(CONF.actors.luggage, { actorToFollow: player, heuristic: HEURISTICS.astar })));
     }
     
     function initWorld() {

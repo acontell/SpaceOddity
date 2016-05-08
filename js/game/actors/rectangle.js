@@ -12,6 +12,10 @@ Rectangle.prototype.getCoords = function () {
     return _.pick(this, 'x', 'y');
 };
 
+Rectangle.prototype.getRect = function () {
+    return _.extend(this.getCoords(), _.pick(this, 'width', 'height'));
+};
+
 Rectangle.prototype.getRectAfterMovement = function (movement) {
     return {
         x: this.x + movement.x,
