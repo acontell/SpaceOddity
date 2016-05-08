@@ -15,9 +15,9 @@ function Follower(cfg) {
 
     function findTheCoordsToGo() {
         return {
-            x: this.x > actorToFollow.x ?
+            x: this.x >= actorToFollow.x ?
                 actorToFollow.x + actorToFollow.width + perimeterOffset : actorToFollow.x - perimeterOffset - this.width,
-            y: this.y > actorToFollow.y ?
+            y: this.y >= actorToFollow.y ?
                 actorToFollow.y + actorToFollow.height + perimeterOffset : actorToFollow.y - perimeterOffset - this.height
         };
     }
